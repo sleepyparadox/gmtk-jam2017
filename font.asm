@@ -10,8 +10,129 @@ StartFontData:
 include "font_data.asm"
 EndFontData:
 
+LineWriteHelloWorld::
+	ld HL, TileGridRow0
+	call LineHLClear
+	
+	ld A, FontH
+	ld DE, $00
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontE
+	ld DE, $01
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontL
+	ld DE, $02
+	call TileAWriteToDE_USES_HL
+	ld DE, $03
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontO
+	ld DE, $04
+	call TileAWriteToDE_USES_HL
+	
+	ld A, Font_
+	ld DE, $05
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontW
+	ld DE, $06
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontO
+	ld DE, $07
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontR
+	ld DE, $08
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontL
+	ld DE, $09
+	call TileAWriteToDE_USES_HL
+	
+	ld A, FontD
+	ld DE, $0A
+	call TileAWriteToDE_USES_HL
+ret
+
+
+LineHLClear::
+	
+	ld C, 20
+
+.writeNextTile
+	
+	ld [HL], Font_
+	
+	inc HL
+	dec C
+	jp nz, .writeNextTile
+	
+	ret
+	
+; this method makes me so sad
+; but I don't have time to get my pointers working
+LinesClear::
+	ld HL, TileGridRow0
+	call LineHLClear
+
+	ld HL, TileGridRow1
+	call LineHLClear
+
+	ld HL, TileGridRow2
+	call LineHLClear
+
+	ld HL, TileGridRow3
+	call LineHLClear
+
+	ld HL, TileGridRow4
+	call LineHLClear
+
+	ld HL, TileGridRow5
+	call LineHLClear
+
+	ld HL, TileGridRow6
+	call LineHLClear
+
+	ld HL, TileGridRow7
+	call LineHLClear
+
+	ld HL, TileGridRow8
+	call LineHLClear
+
+	ld HL, TileGridRow9
+	call LineHLClear
+
+	ld HL, TileGridRow10
+	call LineHLClear
+
+	ld HL, TileGridRow11
+	call LineHLClear
+
+	ld HL, TileGridRow12
+	call LineHLClear
+
+	ld HL, TileGridRow13
+	call LineHLClear
+
+	ld HL, TileGridRow14
+	call LineHLClear
+
+	ld HL, TileGridRow15
+	call LineHLClear
+	
+	ld HL, TileGridRow16
+	call LineHLClear
+	
+	ld HL, TileGridRow17
+	call LineHLClear
+	
+	ret
+	
 ; Copies into tileset
-LoadFontIntoTiles::
+FontLoadIntoTileMap::
 	ld HL, StartFontData
 	ld DE, BaseTileMap
 	
@@ -35,26 +156,4 @@ LoadFontIntoTiles::
 	jp nz, .loop
 	
 	;; all done!
-ret
-
-
-
-
-HelloWorld::
-	
-	ld A, FontH
-	ld HL, $00
-	call WriteAToHLTile_USE_BC_DE
-	
-	ld A, FontE
-	ld HL, $10
-	call WriteAToHLTile_USE_BC_DE
-	
-	ld A, FontL
-	ld HL, $20
-	call WriteAToHLTile_USE_BC_DE
-	
-	ld A, FontL
-	ld HL, $30
-	call WriteAToHLTile_USE_BC_DE
 ret

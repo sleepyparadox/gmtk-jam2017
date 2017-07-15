@@ -2,103 +2,185 @@ include "vram.asm"
 
 Section "TileGrid", ROM0
 
-; A little hacky but useful for quick lookup
-TileGridRow0 EQU $9800
-TileGridRow1 EQU $9820
-TileGridRow2 EQU $9840
-TileGridRow3 EQU $9880
-TileGridRow4 EQU $98a0
-TileGridRow5 EQU $98c0
-TileGridRow6 EQU $98e0
-TileGridRow7 EQU $9900
-TileGridRow8 EQU $9920
-TileGridRow9 EQU $9940
-TileGridRow10 EQU $9980
-TileGridRow11 EQU $99a0
-TileGridRow12 EQU $99c0
-TileGridRow13 EQU $99e0
-TileGridRow14 EQU $9a00
-TileGridRow15 EQU $9a20
+; failed experiment
+;RowPointersStart:
+;dw TileGridRow0
+;dw TileGridRow1
+;dw TileGridRow2
+;dw TileGridRow3
+;dw TileGridRow4
+;dw TileGridRow5
+;dw TileGridRow6
+;dw TileGridRow7
+;dw TileGridRow8
+;dw TileGridRow9
+;dw TileGridRow10
+;dw TileGridRow11
+;dw TileGridRow12
+;dw TileGridRow13
+;dw TileGridRow14
+;dw TileGridRow15
 
-StartTileRowPointers:
-dw TileGridRow0
-dw TileGridRow1
-dw TileGridRow2
-dw TileGridRow3
-dw TileGridRow4
-dw TileGridRow5
-dw TileGridRow6
-dw TileGridRow7
-dw TileGridRow8
-dw TileGridRow9
-dw TileGridRow10
-dw TileGridRow11
-dw TileGridRow12
-dw TileGridRow13
-dw TileGridRow14
-dw TileGridRow15
-EndTileRowPoi
-
-WriteAToHLTile::
-	push BC
-	push DE
-	call WriteAToHLTile_USE_BC_DE
-	pop DE
-	pop BC
+TileAWriteToDE::
+	push HL
+	call TileAWriteToDE_USES_HL
+	pop HL
+	
 	ret
 	
-WriteAToHLTile_USE_BC_DE::
+; this method makes me so sad
+; but I don't have time to get my pointers working
+; besides the clear line should be pretty handy for what I have planned
 	
+TileAWriteToDE_USES_HL::
 	
 	; We don't actually need A until the write
 	push AF
 	
-	; Let's find row pointer
-	ld DE, StartTileRowPointers
-	ld A, 0
-.LTileStart		
 	
-	; is DE correct?
-	cp L
-	jp z, .LTileDone
+	; I really hate this solution
+	ld A, 17
+	cp D
+	jp z, .useRow17
 	
-	; look at next pointer
-	inc A
-	inc DE
-	inc DE
-	jp .LTileStart
+	dec A
+	cp D
+	jp z, .useRow16
 	
-.LTileDone
+	dec A
+	cp D
+	jp z, .useRow15
 	
-	; dereference row pointer
+	dec A
+	cp D
+	jp z, .useRow14
 	
-	; stash pointer D
-	ld A, [DE]
-	ld C, A
-	; look at pointer E
-	inc DE
-	ld A, [DE]
-	; populate DE
-	ld D, C
-	ld E, A
-
+	dec A
+	cp D
+	jp z, .useRow13
+	
+	dec A
+	cp D
+	jp z, .useRow12
+	
+	dec A
+	cp D
+	jp z, .useRow11
+	
+	dec A
+	cp D
+	jp z, .useRow10
+	
+	dec A
+	cp D
+	jp z, .useRow9
+	
+	dec A
+	cp D
+	jp z, .useRow8
+	
+	dec A
+	cp D
+	jp z, .useRow7
+	
+	dec A
+	cp D
+	jp z, .useRow6
+	
+	dec A
+	cp D
+	jp z, .useRow5
+	
+	dec A
+	cp D
+	jp z, .useRow4
+	
+	dec A
+	cp D
+	jp z, .useRow3
+	
+	dec A
+	cp D
+	jp z, .useRow2
+	
+	dec A
+	cp D
+	jp z, .useRow1
+	
+;useRow0
+	ld HL, TileGridRow0
+	jp .useRow
+.useRow1
+	ld HL, TileGridRow1
+	jp .useRow	
+.useRow2
+	ld HL, TileGridRow2
+	jp .useRow	
+.useRow3
+	ld HL, TileGridRow3
+	jp .useRow	
+.useRow4
+	ld HL, TileGridRow4
+	jp .useRow	
+.useRow5
+	ld HL, TileGridRow5
+	jp .useRow	
+.useRow6
+	ld HL, TileGridRow6
+	jp .useRow	
+.useRow7
+	ld HL, TileGridRow7
+	jp .useRow	
+.useRow8
+	ld HL, TileGridRow8
+	jp .useRow	
+.useRow9
+	ld HL, TileGridRow9
+	jp .useRow	
+.useRow10
+	ld HL, TileGridRow10
+	jp .useRow	
+.useRow11
+	ld HL, TileGridRow11
+	jp .useRow	
+.useRow12
+	ld HL, TileGridRow12
+	jp .useRow	
+.useRow13
+	ld HL, TileGridRow13
+	jp .useRow	
+.useRow14
+	ld HL, TileGridRow14
+	jp .useRow	
+.useRow15
+	ld HL, TileGridRow15
+	jp .useRow	
+.useRow16
+	ld HL, TileGridRow16
+	jp .useRow	
+.useRow17
+	ld HL, TileGridRow17
+	jp .useRow	
+	
+.useRow
+	
 	; Let's find tile
 	ld A, 0
 .HTileStart		
 	
-	; is DE correct?
-	cp H
+	; is HL at correct E?
+	cp E
 	jp z, .HTileDone
 	
 	;look at next tile
 	inc A
-	inc DE
+	inc HL
 	jp .HTileStart
 	
 .HTileDone	
 	
-	; write A to tile
+	; write origonal A to tile
 	pop AF
-	ld [DE], A
+	ld [HL], A
 	
 	ret

@@ -28,8 +28,10 @@ Start::
 
 	; Initialize VRAM
 	
-	call LoadFontIntoTiles
-	call HelloWorld
+	call SpritesClear
+	call FontLoadIntoTileMap
+	call LinesClear
+	call LineWriteHelloWorld
 	
 	; Initialize other settings
 	; Set pallettes

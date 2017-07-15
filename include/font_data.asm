@@ -258,4 +258,4 @@ dw `00100000
 dw `01111100
 dw `00000000
 
-; font_data.asm last updated 15/07/2017 5:27:46 AM UTC
+; font_data.asm last updated 15/07/2017 9:51:44 AM UTC

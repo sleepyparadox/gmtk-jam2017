@@ -16,3 +16,23 @@ SpriteTable EQU $fe00
 
 ; How many working sprite slots to have
 NumSprites EQU 3
+
+; A little hacky but useful for quick lookup
+TileGridRow0 EQU $9800
+TileGridRow1 EQU $9820
+TileGridRow2 EQU $9840
+TileGridRow3 EQU $9860
+TileGridRow4 EQU $9880
+TileGridRow5 EQU $98a0
+TileGridRow6 EQU $98c0
+TileGridRow7 EQU $98e0
+TileGridRow8 EQU $9900
+TileGridRow9 EQU $9920
+TileGridRow10 EQU $9940
+TileGridRow11 EQU $9960
+TileGridRow12 EQU $9980
+TileGridRow13 EQU $99a0
+TileGridRow14 EQU $99c0
+TileGridRow15 EQU $99e0
+TileGridRow16 EQU $9a00
+TileGridRow17 EQU $9a20

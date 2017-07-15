@@ -24,3 +24,4 @@ FontW EQU 22
 FontX EQU 23
 FontY EQU 24
 FontZ EQU 25
+Font_ EQU 26
