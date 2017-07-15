@@ -4,8 +4,14 @@ include "font_chars.asm"
 ; declare how many dec, jp ops per DPad / Buttons Swap
 InputWait EQU 4
 
-Section "InputWRam", WRAM0
+ActionNone EQU 0
+ActionUpdate EQU 1
+ActionPush EQU 2
 
+
+Section "InputWRam", WRAM0
+InputPendingAction::
+DB 
 InputPendingCha::
 DB 
 InputPendingRow::
@@ -18,6 +24,7 @@ Section "Input", ROM0
 
 InputInit::
 	ld A, 0
+	ld [InputPendingAction], A
 	ld [InputPendingCha], A
 	ld [InputPendingRow], A
 	ld [InputPendingCol], A
@@ -28,8 +35,8 @@ InputInit::
 InputUpdate::
 
 	; skip if input already pending
-	ld A, [InputPendingCha]
-	ld B, 0
+	ld A, [InputPendingAction]
+	ld B, ActionNone
 	cp B
 	jp nz, .inputDone
 	
@@ -37,31 +44,49 @@ InputUpdate::
 	call InputsListenForButtons
 	
 	ld A, [JoyIO]	
+	; if A pressed
 	bit 0, A
-	jp z, .buttonAInputDetected ; pressing A button	
-	;else
+	jp z, .buttonAInputDetected 
+	; else if B press
+	bit 1, A
+	jp z, .buttonBInputDetected
+	; else
 	jp .inputDone
 	
 	
 .buttonAInputDetected	
 	
 	ld HL, InputPendingCha
-	ld [HL], 3
+	ld [HL], FontA
+	
+	ld HL, InputPendingAction
+	ld [HL], ActionUpdate
 	
 	jp .inputDone
- 
+
+.buttonBInputDetected	
+	
+	ld HL, InputPendingCha
+	ld [HL], FontB
+	
+	ld HL, InputPendingAction
+	ld [HL], ActionPush
+	
+	jp .inputDone
+
+	
 .inputDone
 	ret
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 InputDraw::
 	; skip if no input pending
-	ld A, [InputPendingCha]
-	ld B, 0
+	ld A, [InputPendingAction]
+	ld B, ActionNone
 	cp B
 	jp z, .drawDone
 	
-	; grab the input info
+	; grab the action info
 	ld A, [InputPendingRow]
 	ld D, A
 	
@@ -73,14 +98,21 @@ InputDraw::
 	; write to tiles
 	call TileAWriteToDE_USES_HL
 	
-	; inc column
+	; check if character is pushed
+	ld A, [InputPendingAction]
+	ld B, ActionPush
+	cp B
+	jp z, .clearAction
+	
+	; push character
 	ld A, [InputPendingCol]
 	inc A
 	ld [InputPendingCol], A
 
-	; clear the input
-	ld A, 0
-	ld [InputPendingCha], A
+.clearAction
+	; clear the action
+	ld A, ActionNone
+	ld [InputPendingAction], A
 	
 .drawDone
 	ret
