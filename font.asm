@@ -10,6 +10,7 @@ StartFontData:
 include "font_data.asm"
 EndFontData:
 
+; unuses
 LineWriteHelloWorld::
 	ld HL, TileGridRow0
 	call LineHLClear
@@ -55,7 +56,9 @@ LineWriteHelloWorld::
 	ld A, FontD
 	ld DE, $0A
 	call TileAWriteToDE_USES_HL
-ret
+	
+	ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 LineHLClear::
@@ -71,6 +74,7 @@ LineHLClear::
 	jp nz, .writeNextTile
 	
 	ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
 ; this method makes me so sad
 ; but I don't have time to get my pointers working
@@ -130,6 +134,7 @@ LinesClear::
 	call LineHLClear
 	
 	ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
 ; Copies into tileset
 FontLoadIntoTileMap::
@@ -157,3 +162,4 @@ FontLoadIntoTileMap::
 	
 	;; all done!
 ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -

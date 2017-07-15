@@ -27,6 +27,7 @@ TileAWriteToDE::
 	pop HL
 	
 	ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	
 ; this method makes me so sad
 ; but I don't have time to get my pointers working
@@ -184,3 +185,4 @@ TileAWriteToDE_USES_HL::
 	ld [HL], A
 	
 	ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -

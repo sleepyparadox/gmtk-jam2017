@@ -20,7 +20,7 @@ Start::
 	ld SP, StackTop
 
 	; Initialize HRAM
-
+	call InputInit
 
 	; Disable background while we're fucking with vram
 	xor A
@@ -64,10 +64,23 @@ Start::
 
 ; Called upon vblank
 Draw::
+	push AF
+	push BC
+	push DE
+	push HL
 	
+	call InputDraw
+	
+	pop HL
+	pop DE
+	pop BC
+	pop AF
+
 	reti
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ; Called on a timer interrupt at 64Hz. May still be interrupted by VBlank.
 Update::
-	
+	call InputUpdate
 	ret
+; - - - - - - - - - - - - - - - - - - - - - - - - - - -
