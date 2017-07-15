@@ -1,4 +1,5 @@
 include "ioregs.asm"
+include "vram.asm"
 
 Section "Stack", WRAM0
 
@@ -26,6 +27,8 @@ Start::
 	ld [LCDControl], A
 
 	; Initialize VRAM
+	
+	call LoadFontIntoTiles
 	
 	; Initialize other settings
 	; Set pallettes
@@ -58,6 +61,7 @@ Start::
 
 ; Called upon vblank
 Draw::
+	
 	reti
 
 ; Called on a timer interrupt at 64Hz. May still be interrupted by VBlank.

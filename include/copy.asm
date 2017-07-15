@@ -1,0 +1,2 @@
+Section "CopyMethod", ROM0
+

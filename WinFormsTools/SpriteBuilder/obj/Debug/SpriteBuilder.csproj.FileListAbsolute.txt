@@ -1,0 +1,8 @@
+D:\SpriteBuilder.exe.config
+D:\SpriteBuilder.exe
+D:\SpriteBuilder.pdb
+D:\SleepyParadox\gmtk-jam2017\SpriteBuilder.exe.config
+D:\SleepyParadox\gmtk-jam2017\WinFormsTools\SpriteBuilder\obj\Debug\SpriteBuilder.exe
+D:\SleepyParadox\gmtk-jam2017\WinFormsTools\SpriteBuilder\obj\Debug\SpriteBuilder.pdb
+D:\SleepyParadox\gmtk-jam2017\SpriteBuilder.exe
+D:\SleepyParadox\gmtk-jam2017\SpriteBuilder.pdb
