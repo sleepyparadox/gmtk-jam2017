@@ -1,4 +1,6 @@
 include "vram.asm"
+include "font_chars.asm"
+
 Section "Font", ROM0
 
 FontCells EQU 26
@@ -33,4 +35,26 @@ LoadFontIntoTiles::
 	jp nz, .loop
 	
 	;; all done!
+ret
+
+
+
+
+HelloWorld::
+	
+	ld A, FontH
+	ld HL, $00
+	call WriteAToHLTile_USE_BC_DE
+	
+	ld A, FontE
+	ld HL, $10
+	call WriteAToHLTile_USE_BC_DE
+	
+	ld A, FontL
+	ld HL, $20
+	call WriteAToHLTile_USE_BC_DE
+	
+	ld A, FontL
+	ld HL, $30
+	call WriteAToHLTile_USE_BC_DE
 ret

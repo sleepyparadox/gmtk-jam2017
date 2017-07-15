@@ -29,6 +29,7 @@ Start::
 	; Initialize VRAM
 	
 	call LoadFontIntoTiles
+	call HelloWorld
 	
 	; Initialize other settings
 	; Set pallettes
